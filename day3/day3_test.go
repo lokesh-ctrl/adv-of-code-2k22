@@ -6,19 +6,30 @@ import (
 
 func TestFindDuplicateEntry(t *testing.T) {
 	var tests = []struct {
-		s1, s2 string
-		want   rune
+		strings []string
+		want    rune
 	}{
-		{"Abcde", "Afsj", 'A'}, {"Ljkh", "qwerL", 'L'},
+		{
+			strings: []string{"Abcde", "aaaaaA"},
+			want:    'A',
+		},
+		{
+			strings: []string{"Lasdf", "Lasdf", "Llll"},
+			want:    'L',
+		},
+		{
+			strings: []string{"Lasdf", "Loki", "L"},
+			want:    'L',
+		},
 	}
-
 	for _, tt := range tests {
-		testName := tt.s1 + "," + tt.s2
-		t.Run(testName, func(t *testing.T) {
-			result := FindDuplicateEntry(tt.s1, tt.s2)
+		testName := tt.want
 
-			if result != tt.want {
-				t.Error("got" + string(result) + " want" + string(tt.want))
+		t.Run(string(testName), func(t *testing.T) {
+			result := FindDuplicateEntry(tt.strings)
+
+			if result[0] != tt.want {
+				t.Error("got" + string(result) + "want" + string(tt.want))
 			}
 		})
 	}
@@ -56,5 +67,17 @@ func TestDay3P1(t *testing.T) {
 
 func TestDay3P1Log(t *testing.T) {
 	result := Day3P1("input.txt")
+	t.Logf("Got answer %d", result)
+}
+
+func TestDay3P2(t *testing.T) {
+	result := Day3P2("test.txt")
+	if result != 70 {
+		t.Errorf("wrong answer, got %d, want %d", result, 70)
+	}
+}
+
+func TestDay3P2Log(t *testing.T) {
+	result := Day3P2("input.txt")
 	t.Logf("Got answer %d", result)
 }

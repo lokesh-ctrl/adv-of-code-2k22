@@ -12,7 +12,19 @@ func Day3P1(inputFile string) int {
 	total := 0
 
 	for _, input := range inputs {
-		total += FindRearrangementScore(FindDuplicateEntry(input[0:len(input)/2], input[len(input)/2:]))
+		inputArray := []string{input[0 : len(input)/2], input[len(input)/2:]}
+		total += FindRearrangementScore(FindDuplicateEntry(inputArray)[0])
+	}
+
+	return total
+}
+
+func Day3P2(inputFile string) int {
+	inputs, _ := parseAndReadLines(inputFile)
+	total := 0
+
+	for i := 0; i < len(inputs); i += 3 {
+		total += FindRearrangementScore(FindDuplicateEntry(inputs[i : i+3])[0])
 	}
 
 	return total
@@ -54,13 +66,18 @@ func FindRearrangementScore(duplicate rune) int {
 	}
 }
 
-func FindDuplicateEntry(string1, string2 string) rune {
-	for _, s := range string1 {
-		if strings.Contains(string2, string(s)) {
-			return s
+func FindDuplicateEntry(stringArray []string) []rune {
+	seenChars := []rune(stringArray[0])
+	for i := 1; i < len(stringArray); i++ {
+		var newChars = []rune{}
+		for _, char := range seenChars {
+			if strings.Contains(stringArray[i], string(char)) {
+				newChars = append(newChars, char)
+			}
 		}
+		seenChars = newChars
 	}
-	return 'A'
+	return seenChars
 }
 
 func parseAndReadLines(path string) ([]string, error) {
