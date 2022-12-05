@@ -1,0 +1,80 @@
+package aoc22
+
+import (
+	"bufio"
+	"os"
+	"strings"
+	"unicode"
+)
+
+func Day3P1(inputFile string) int {
+	inputs, _ := parseAndReadLines(inputFile)
+	total := 0
+
+	for _, input := range inputs {
+		total += FindRearrangementScore(FindDuplicateEntry(input[0:len(input)/2], input[len(input)/2:]))
+	}
+
+	return total
+}
+
+func FindRearrangementScore(duplicate rune) int {
+	scores := map[rune]int{
+		'a': 1,
+		'b': 2,
+		'c': 3,
+		'd': 4,
+		'e': 5,
+		'f': 6,
+		'g': 7,
+		'h': 8,
+		'i': 9,
+		'j': 10,
+		'k': 11,
+		'l': 12,
+		'm': 13,
+		'n': 14,
+		'o': 15,
+		'p': 16,
+		'q': 17,
+		'r': 18,
+		's': 19,
+		't': 20,
+		'u': 21,
+		'v': 22,
+		'w': 23,
+		'x': 24,
+		'y': 25,
+		'z': 26,
+	}
+	if value, ok := scores[duplicate]; ok {
+		return value
+	} else {
+		return scores[unicode.ToLower(duplicate)] + 26
+	}
+}
+
+func FindDuplicateEntry(string1, string2 string) rune {
+	for _, s := range string1 {
+		if strings.Contains(string2, string(s)) {
+			return s
+		}
+	}
+	return 'A'
+}
+
+func parseAndReadLines(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
+}
