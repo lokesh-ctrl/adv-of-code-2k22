@@ -30,3 +30,15 @@ func TestDay4P1Log(t *testing.T) {
 	result := Day4P1("input.txt")
 	t.Logf("Got answer %d", result)
 }
+
+func TestDay4P2(t *testing.T) {
+	result := Day4P2("test.txt")
+	if result != 4 {
+		t.Errorf("wrong answer, got %d, want %d", result, 2)
+	}
+}
+
+func TestDay4P2Log(t *testing.T) {
+	result := Day4P2("input.txt")
+	t.Logf("Got answer %d", result)
+}

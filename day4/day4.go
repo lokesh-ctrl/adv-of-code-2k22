@@ -2,6 +2,7 @@ package adv22
 
 import (
 	"bufio"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -29,6 +30,30 @@ func FindIfOverallOverlapping(s string) bool {
 	} else {
 		return false
 	}
+}
+
+func FindIfAnyOverlap(s string) bool {
+	ranges := strings.Split(s, ",")
+	startingOfFirst, _ := strconv.Atoi(strings.Split(ranges[0], "-")[0])
+	endingOfFirst, _ := strconv.Atoi(strings.Split(ranges[0], "-")[1])
+	startingOfSecond, _ := strconv.Atoi(strings.Split(ranges[1], "-")[0])
+	endingOfSecond, _ := strconv.Atoi(strings.Split(ranges[1], "-")[1])
+	if math.Max(float64(startingOfFirst), float64(startingOfSecond)) <= math.Min(float64(endingOfFirst), float64(endingOfSecond)) {
+		return true
+	} else {
+		return false
+	}
+}
+
+func Day4P2(inputFile string) int {
+	inputs, _ := parseAndReadLines(inputFile)
+	numOLap := 0
+	for _, input := range inputs {
+		if FindIfAnyOverlap(input) {
+			numOLap += 1
+		}
+	}
+	return numOLap
 }
 
 func parseAndReadLines(path string) ([]string, error) {
